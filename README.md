@@ -9,14 +9,14 @@
 <img width="560" height="450" alt="image" src="https://github.com/user-attachments/assets/2e78db19-cdaf-4365-a0ee-f64b3c43bc48" />
 
 
-`apkjiagu` 把开源的 dpt-shell 引擎封装成可视化桌面应用，**一键完成加固与签名**，无需命令行、无需上传到云端、无需付费。所有处理在本地完成，APK不需要上传云端。
+`apkjiagu` 把开源的 dpt-shell 引擎封装成可视化桌面应用，**一键完成加固与签名**，无需命令行、无需上传到云端、无需付费。所有处理在本地完成，数据不需要上传云端。
 
 ## 功能特性
 
 - **拖拽 / 选择 APK**：自动解析 `AndroidManifest.xml`，提取包名、版本、minSdk 等元信息
 - **可视化加固参数**：
-  - 排除架构 (armeabi-v7a / arm64-v8a / x86 / x86_64)
-  - 体积压缩、保留类、Debuggable、运行时签名校验、禁用组件工厂、详细日志
+  - 排除架构 (armeabi-v7a / arm64-v8a / x86 / x86_64) (建议使用默认勾选的选项不作修改)
+  - 体积压缩、保留类、Debuggable、运行时签名校验、禁用组件工厂、详细日志，(建议使用默认勾选的选项不作修改)
   - 排除规则文件
 - **自动签名**：基于 Android Build Tools r34 的 `apksigner`，支持 V1/V2/V3/V4 签名方案，可保存多个 keystore 配置
 - **zipalign 对齐**：签名前自动对齐
@@ -24,6 +24,8 @@
 - **日志面板**：实时日志输出，支持自由选择、复制
 - **科技工业风 UI**：深青绿 + 琥珀点缀，三栏式布局
 <img width="1266" height="713" alt="image" src="https://github.com/user-attachments/assets/8cfda293-6d4b-49c5-af84-daa3e472d2c8" />
+<img width="1266" height="713" alt="image" src="https://github.com/user-attachments/assets/c3ed2eb1-2d90-4528-ba9d-ea7a07e37d36" />
+
 
 
 ## 默认参数
