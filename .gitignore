@@ -73,3 +73,13 @@ apkjiagu_dev/
 
 # 下载的第三方工具源码/压缩包（assets/tools 已含精简版）
 downloads/
+
+# 项目内部文档（不入库）
+需求.txt
+需求*.txt
+TODO.md
+NOTES.md
+
+# Release 打包产物（仅本地保存，不入库）
+apkjiagu-*.zip
+release-*.zip

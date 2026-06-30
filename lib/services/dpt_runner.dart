@@ -142,15 +142,34 @@ class DptRunner {
   }
 
   /// 简单识别日志级别
+  ///
+  /// 注意：JVM 启动时会把 "Picked up JAVA_TOOL_OPTIONS: ..." 写到 stderr，
+  /// 这不是错误，需要单独识别并标记为 INFO。
   static void _parseLog(
     String line,
     LogSink onLog, {
     String defaultLevel = 'INFO',
   }) {
     if (line.trim().isEmpty) return;
+
+    // JVM 启动噪声：识别并降级为 INFO
+    if (line.startsWith('Picked up ') ||
+        line.startsWith('Picked up JAVA_') ||
+        line.contains('Picked up JAVA_TOOL_OPTIONS') ||
+        line.contains('Picked up _JAVA_OPTIONS') ||
+        line.contains('Picked up _JAVAOPTIONS')) {
+      onLog('INFO', line);
+      return;
+    }
+
     final upper = line.toUpperCase();
     String level = defaultLevel;
-    if (upper.contains('ERROR') || upper.contains('EXCEPTION') || upper.contains('FAILED')) {
+    // 仅当行内显式包含 ERROR/EXCEPTION/FAILED 关键字时才视为错误，
+    // 避免把 stderr 上的普通信息（如 JVM 噪声）误判为错误
+    if (upper.contains('ERROR') ||
+        upper.contains('EXCEPTION') ||
+        upper.contains('FAILED') ||
+        upper.contains('FATAL')) {
       level = 'ERROR';
     } else if (upper.contains('WARN')) {
       level = 'WARN';

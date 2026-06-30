@@ -99,7 +99,14 @@ class ApkSignerService {
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .listen((line) {
-      if (line.trim().isNotEmpty) onLog('ERROR', line);
+      final t = line.trim();
+      if (t.isEmpty) return;
+      // JVM 启动噪声：识别并降级为 INFO
+      if (t.startsWith('Picked up ') || t.contains('Picked up JAVA_')) {
+        onLog('INFO', line);
+        return;
+      }
+      onLog('ERROR', line);
     });
 
     Timer? cancelTimer;
