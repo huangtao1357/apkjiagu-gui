@@ -230,7 +230,7 @@ class _SideNavState extends State<_SideNav> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: cs.outlineVariant.withOpacity(0.4),
+                  color: cs.outlineVariant.withValues(alpha:0.4),
                   width: 1,
                 ),
               ),
@@ -249,7 +249,7 @@ class _SideNavState extends State<_SideNav> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: AppPalette.primary.withOpacity(0.35),
+                        color: AppPalette.primary.withValues(alpha:0.35),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -304,7 +304,7 @@ class _SideNavState extends State<_SideNav> {
               _version.isEmpty ? '' : _version,
               style: TextStyle(
                 fontSize: 10,
-                color: cs.onSurfaceVariant.withOpacity(0.6),
+                color: cs.onSurfaceVariant.withValues(alpha:0.6),
                 letterSpacing: 1,
               ),
             ),
@@ -338,7 +338,7 @@ class _NavTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Material(
-        color: active ? AppPalette.primary.withOpacity(0.12) : Colors.transparent,
+        color: active ? AppPalette.primary.withValues(alpha:0.12) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
           borderRadius: BorderRadius.circular(8),

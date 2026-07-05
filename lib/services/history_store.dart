@@ -66,9 +66,4 @@ class HistoryStore {
     final db = await _getDB();
     await db.delete('history', where: 'id = ?', whereArgs: [id]);
   }
-
-  static Future<void> deleteAll() async {
-    final db = await _getDB();
-    await db.delete('history');
-  }
 }

@@ -86,7 +86,7 @@ class ApkSignerService {
 
     args.addAll(['--out', outputApk, alignedApk]);
 
-    onLog('INFO', '运行 apksigner: java ${args.join(' ')}');
+    onLog('INFO', '运行 apksigner: java ${_maskArgs(args).join(' ')}');
     final proc = await Process.start('java', args, runInShell: false);
 
     final stdoutSub = proc.stdout
@@ -135,6 +135,19 @@ class ApkSignerService {
       onLog('ERROR', '签名失败，退出码：$exitCode');
     }
     return exitCode;
+  }
+
+  /// 对命令行参数中的敏感信息做掩码，仅用于日志输出
+  static List<String> _maskArgs(List<String> args) {
+    final masked = <String>[];
+    for (final a in args) {
+      if (a.startsWith('pass:')) {
+        masked.add('pass:***');
+      } else {
+        masked.add(a);
+      }
+    }
+    return masked;
   }
 
   /// 验证签名

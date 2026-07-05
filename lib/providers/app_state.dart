@@ -57,6 +57,51 @@ class AppState extends ChangeNotifier {
   String? rulesFile;
   String? protectConfig;
 
+  /// 设置加固布尔参数，通过字段名标识
+  void setHardenOption(String field, bool value) {
+    switch (field) {
+      case 'excludeX86':
+        excludeX86 = value;
+        break;
+      case 'excludeX86_64':
+        excludeX86_64 = value;
+        break;
+      case 'excludeArm':
+        excludeArm = value;
+        break;
+      case 'excludeArm64':
+        excludeArm64 = value;
+        break;
+      case 'smaller':
+        smaller = value;
+        break;
+      case 'noSign':
+        noSign = value;
+        break;
+      case 'keepClasses':
+        keepClasses = value;
+        break;
+      case 'debuggable':
+        debuggable = value;
+        break;
+      case 'verifySign':
+        verifySign = value;
+        break;
+      case 'disableAcf':
+        disableAcf = value;
+        break;
+      case 'noisyLog':
+        noisyLog = value;
+        break;
+    }
+    notifyListeners();
+  }
+
+  void setRulesFile(String? path) {
+    rulesFile = path;
+    notifyListeners();
+  }
+
   // ===== 签名配置 =====
   List<SignConfig> signConfigs = [];
   String? selectedSignConfigId; // null 表示不签名
@@ -170,10 +215,13 @@ class AppState extends ChangeNotifier {
 
   SignConfig? get selectedSignConfig {
     if (selectedSignConfigId == null) return null;
-    return signConfigs.firstWhere(
-      (e) => e.id == selectedSignConfigId,
-      orElse: () => signConfigs.first,
-    );
+    final i = signConfigs.indexWhere((e) => e.id == selectedSignConfigId);
+    if (i < 0) {
+      // 选中配置已不存在，清空选择避免误用其他配置签名
+      selectedSignConfigId = null;
+      return null;
+    }
+    return signConfigs[i];
   }
 
   // ===== 加固执行 =====

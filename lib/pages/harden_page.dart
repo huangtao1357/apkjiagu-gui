@@ -102,7 +102,7 @@ class _HardenPageState extends State<HardenPage> {
   Widget _divider() {
     return Container(
       width: 1,
-      color: Theme.of(context).dividerColor.withOpacity(0.5),
+      color: Theme.of(context).dividerColor.withValues(alpha:0.5),
     );
   }
 
@@ -113,7 +113,7 @@ class _HardenPageState extends State<HardenPage> {
           width: 28,
           height: 28,
           decoration: BoxDecoration(
-            color: AppPalette.primary.withOpacity(0.1),
+            color: AppPalette.primary.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Icon(icon, size: 16, color: AppPalette.primary),
@@ -173,13 +173,13 @@ class _HardenPageState extends State<HardenPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: AppPalette.primary.withOpacity(0.3),
+                    color: AppPalette.primary.withValues(alpha:0.3),
                     width: 1.5,
                   ),
                   gradient: LinearGradient(
                     colors: [
-                      AppPalette.primary.withOpacity(0.06),
-                      AppPalette.primary.withOpacity(0.02),
+                      AppPalette.primary.withValues(alpha:0.06),
+                      AppPalette.primary.withValues(alpha:0.02),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -237,7 +237,7 @@ class _HardenPageState extends State<HardenPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.08),
+                  color: Colors.red.withValues(alpha:0.08),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
@@ -352,7 +352,7 @@ class _HardenPageState extends State<HardenPage> {
                     : () async {
                         final result = await FilePicker.platform.pickFiles();
                         if (result != null && result.files.isNotEmpty) {
-                          setState(() => s.rulesFile = result.files.first.path);
+                          s.setRulesFile(result.files.first.path);
                         }
                       },
                 style: OutlinedButton.styleFrom(
@@ -424,7 +424,7 @@ class _HardenPageState extends State<HardenPage> {
                 ? Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: AppPalette.accent.withOpacity(0.08),
+                      color: AppPalette.accent.withValues(alpha:0.08),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Row(
@@ -577,7 +577,7 @@ class _HardenPageState extends State<HardenPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 1),
                       decoration: BoxDecoration(
-                        color: AppPalette.primary.withOpacity(0.12),
+                        color: AppPalette.primary.withValues(alpha:0.12),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -638,12 +638,12 @@ class _HardenPageState extends State<HardenPage> {
                           children: [
                             Icon(Icons.receipt_long_outlined,
                                 size: 32,
-                                color: cs.onSurfaceVariant.withOpacity(0.3)),
+                                color: cs.onSurfaceVariant.withValues(alpha:0.3)),
                             const SizedBox(height: 8),
                             Text(
                               '尚无日志',
                               style: TextStyle(
-                                color: cs.onSurfaceVariant.withOpacity(0.5),
+                                color: cs.onSurfaceVariant.withValues(alpha:0.5),
                                 fontSize: 12,
                               ),
                             ),
@@ -691,7 +691,7 @@ class _HardenPageState extends State<HardenPage> {
       child: RichText(
         softWrap: true,
         selectionRegistrar: SelectionContainer.maybeOf(context),
-        selectionColor: AppPalette.primary.withOpacity(0.2),
+        selectionColor: AppPalette.primary.withValues(alpha:0.2),
         text: TextSpan(
           style: TextStyle(
               fontFamily: 'Consolas, monospace',
@@ -701,7 +701,7 @@ class _HardenPageState extends State<HardenPage> {
           children: [
             TextSpan(
                 text: '[$timeStr] ',
-                style: TextStyle(color: cs.onSurfaceVariant.withOpacity(0.7))),
+                style: TextStyle(color: cs.onSurfaceVariant.withValues(alpha:0.7))),
             TextSpan(
                 text: '[$level] ',
                 style: TextStyle(
@@ -742,40 +742,6 @@ class _HardenPageState extends State<HardenPage> {
   }
 
   void _setBool(AppState s, String field, bool v) {
-    switch (field) {
-      case 'excludeX86':
-        s.excludeX86 = v;
-        break;
-      case 'excludeX86_64':
-        s.excludeX86_64 = v;
-        break;
-      case 'excludeArm':
-        s.excludeArm = v;
-        break;
-      case 'excludeArm64':
-        s.excludeArm64 = v;
-        break;
-      case 'smaller':
-        s.smaller = v;
-        break;
-      case 'noSign':
-        s.noSign = v;
-        break;
-      case 'keepClasses':
-        s.keepClasses = v;
-        break;
-      case 'debuggable':
-        s.debuggable = v;
-        break;
-      case 'verifySign':
-        s.verifySign = v;
-        break;
-      case 'disableAcf':
-        s.disableAcf = v;
-        break;
-      case 'noisyLog':
-        s.noisyLog = v;
-        break;
-    }
+    s.setHardenOption(field, v);
   }
 }
