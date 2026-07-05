@@ -2,7 +2,7 @@ name: apkjiagu
 description: "APK 加固工具 - 基于 dpt-shell 的可视化加固与签名工具"
 publish_to: 'none'
 
-version: 0.0.0+2
+version: 0.0.0+3
 
 environment:
   sdk: ^3.11.5
