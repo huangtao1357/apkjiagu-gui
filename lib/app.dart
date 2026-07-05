@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/harden_page.dart';
@@ -172,10 +173,32 @@ class _HomeShellState extends State<_HomeShell> {
   }
 }
 
-class _SideNav extends StatelessWidget {
+class _SideNav extends StatefulWidget {
   final int index;
   final ValueChanged<int> onChanged;
   const _SideNav({required this.index, required this.onChanged});
+
+  @override
+  State<_SideNav> createState() => _SideNavState();
+}
+
+class _SideNavState extends State<_SideNav> {
+  String _version = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _version = 'v${info.version}.${info.buildNumber}';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -266,11 +289,11 @@ class _SideNav extends StatelessWidget {
           // 导航项
           ...List.generate(items.length, (i) {
             final item = items[i];
-            final active = i == index;
+            final active = i == widget.index;
             return _NavTile(
               item: item,
               active: active,
-              onTap: () => onChanged(i),
+              onTap: () => widget.onChanged(i),
             );
           }),
           const Spacer(),
@@ -278,7 +301,7 @@ class _SideNav extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              'v1.0.0',
+              _version.isEmpty ? '' : _version,
               style: TextStyle(
                 fontSize: 10,
                 color: cs.onSurfaceVariant.withOpacity(0.6),
