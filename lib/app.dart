@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/about_page.dart';
 import 'pages/harden_page.dart';
 import 'pages/history_page.dart';
 import 'pages/sign_configs_page.dart';
@@ -149,6 +150,7 @@ class _HomeShellState extends State<_HomeShell> {
       const HardenPage(),
       const SignConfigsPage(),
       const HistoryPage(),
+      const AboutPage(),
     ];
 
     return Scaffold(
@@ -217,6 +219,8 @@ class _SideNavState extends State<_SideNav> {
           icon: Icons.history_outlined,
           activeIcon: Icons.history,
           label: '历史记录'),
+      _NavItem(
+          icon: Icons.info_outline, activeIcon: Icons.info, label: '关于'),
     ];
 
     return Container(

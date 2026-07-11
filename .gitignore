@@ -83,3 +83,4 @@ NOTES.md
 # Release 打包产物（仅本地保存，不入库）
 apkjiagu-*.zip
 release-*.zip
+release_notes_*.md
