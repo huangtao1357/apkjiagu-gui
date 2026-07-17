@@ -52,6 +52,10 @@ test.apk
 *.dex
 *.so
 
+# 例外：dpt-shell 运行时必需的 .dex / .so 文件必须入库
+!assets/tools/shell-files/
+!assets/tools/shell-files/**
+
 # 加固输出目录
 dpt_output/
 
