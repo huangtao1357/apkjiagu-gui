@@ -8,14 +8,14 @@ import 'pages/history_page.dart';
 import 'pages/sign_configs_page.dart';
 import 'providers/app_state.dart';
 
-/// 应用主题色板：科技工业风
-/// 主色 deepTeal (#0F766E) + 琥珀辅色 amber (#F59E0B)
+/// 应用主题色板：浅色简约风
+/// 主色 skyBlue (#3B82F6) + 琥珀辅色 amber (#F59E0B)
 class AppPalette {
-  static const primary = Color(0xFF0F766E);
-  static const primaryDark = Color(0xFF0B5953);
+  static const primary = Color(0xFF3B82F6);
+  static const primaryDark = Color(0xFF2563EB);
   static const accent = Color(0xFFF59E0B);
   static const accentDark = Color(0xFFB45309);
-  static const bgLight = Color(0xFFF6F8FA);
+  static const bgLight = Color(0xFFF8FAFC);
   static const surfaceLight = Color(0xFFFFFFFF);
   static const borderLight = Color(0xFFE2E8F0);
   static const darkSurface = Color(0xFF0F172A);
@@ -45,7 +45,7 @@ class ApkJiaguApp extends StatelessWidget {
           elevation: 0,
           color: AppPalette.surfaceLight,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             side: BorderSide(color: AppPalette.borderLight, width: 1),
           ),
           margin: EdgeInsets.zero,
@@ -75,7 +75,7 @@ class ApkJiaguApp extends StatelessWidget {
             backgroundColor: AppPalette.primary,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             textStyle: const TextStyle(
@@ -90,18 +90,18 @@ class ApkJiaguApp extends StatelessWidget {
             foregroundColor: AppPalette.primary,
             side: const BorderSide(color: AppPalette.primary, width: 1.2),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: AppPalette.borderLight),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: AppPalette.primary, width: 1.5),
           ),
           contentPadding:
@@ -253,9 +253,9 @@ class _SideNavState extends State<_SideNav> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: AppPalette.primary.withValues(alpha:0.35),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: AppPalette.primary.withValues(alpha:0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -342,10 +342,10 @@ class _NavTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Material(
-        color: active ? AppPalette.primary.withValues(alpha:0.12) : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
+        color: active ? AppPalette.primary.withValues(alpha:0.1) : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
         child: InkWell(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           onTap: onTap,
           child: Padding(
             padding:
