@@ -51,22 +51,16 @@ class _AboutPageState extends State<AboutPage> {
               const SizedBox(height: 16),
               // 应用图标与名称
               Container(
-                width: 72,
-                height: 72,
+                width: 76,
+                height: 76,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [AppPalette.primary, AppPalette.primaryDark],
+                    colors: [AppPalette.primaryLight, AppPalette.primaryDark],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppPalette.primary.withValues(alpha: 0.2),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: AppShadows.glow(AppPalette.primary),
                 ),
                 child: const Icon(Icons.shield, color: Colors.white, size: 36),
               ),
@@ -88,7 +82,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '基于 DPT-SHELL (v2.14.0) 的可视化加固与签名工具',
+                '基于 DPT-SHELL (v2.15.0) 的可视化加固与签名工具',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
@@ -98,7 +92,7 @@ class _AboutPageState extends State<AboutPage> {
               const SizedBox(height: 28),
 
               // 链接区域
-              Card(
+              AppCard(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 8),
@@ -146,7 +140,7 @@ class _AboutPageState extends State<AboutPage> {
               // 开源许可
               _SectionTitle(title: '开源许可', cs: cs),
               const SizedBox(height: 8),
-              Card(
+              AppCard(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -200,7 +194,7 @@ class _AboutPageState extends State<AboutPage> {
               // 合规声明
               _SectionTitle(title: '合规声明', cs: cs),
               const SizedBox(height: 8),
-              Card(
+              AppCard(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -220,7 +214,7 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                       const SizedBox(height: 10),
                       _DisclaimerItem(
-                        text: '本工具基于开源项目 DPT-SHELL (v2.14.0) 构建，'
+                        text: '本工具基于开源项目 DPT-SHELL (v2.15.0) 构建，'
                             '不对加固后的应用提供绝对的安全保证。'
                             '加固效果可能因目标应用的结构而异。',
                         cs: cs,
