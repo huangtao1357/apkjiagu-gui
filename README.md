@@ -22,9 +22,9 @@
 - **zipalign 对齐**：签名前自动对齐
 - **历史记录**：SQLite 持久化保存每次加固产物路径与参数
 - **日志面板**：实时日志输出，支持自由选择、复制
-- **简约现代风 UI**：，三栏式布局
+- **简约现代风 UI**：三栏式布局
 <img width="1582" height="892" alt="image" src="https://github.com/user-attachments/assets/21ce3b1d-950a-4df1-88c2-0a445810f6bf" />
-<img width="1266" height="713" alt="image" src="https://github.com/user-attachments/assets/c3ed2eb1-2d90-4528-ba9d-ea7a07e37d36" />
+<img width="1566" height="878" alt="image" src="https://github.com/user-attachments/assets/ac8fd77b-34b5-4288-9c17-eb2aad9f1456" />
 <img width="1584" height="892" alt="历史记录" src="https://github.com/user-attachments/assets/1c325f17-45a2-4695-91e0-7a9a83718953" />
 
 
