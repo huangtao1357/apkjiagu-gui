@@ -82,7 +82,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '基于 DPT-SHELL (v2.15.0) 的可视化加固与签名工具',
+                '基于 DPT-SHELL (v2.16.1) 的可视化加固与签名工具',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
@@ -214,7 +214,7 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                       const SizedBox(height: 10),
                       _DisclaimerItem(
-                        text: '本工具基于开源项目 DPT-SHELL (v2.15.0) 构建，'
+                        text: '本工具基于开源项目 DPT-SHELL (v2.16.1) 构建，'
                             '不对加固后的应用提供绝对的安全保证。'
                             '加固效果可能因目标应用的结构而异。',
                         cs: cs,

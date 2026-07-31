@@ -65,10 +65,10 @@ class ToolPaths {
       'tools/dpt-exclude-classes-template.rules',
       'tools/dpt-protect-config-template.json',
       'tools/shell-files/dex/classes.dex',
-      'tools/shell-files/libs/arm/lib82bdeb9e9e4f939b.so',
-      'tools/shell-files/libs/arm64/lib82bdeb9e9e4f939b.so',
-      'tools/shell-files/libs/x86/lib82bdeb9e9e4f939b.so',
-      'tools/shell-files/libs/x86_64/lib82bdeb9e9e4f939b.so',
+      'tools/shell-files/libs/arm/lib22295b0d6c0a828b.so',
+      'tools/shell-files/libs/arm64/lib22295b0d6c0a828b.so',
+      'tools/shell-files/libs/x86/lib22295b0d6c0a828b.so',
+      'tools/shell-files/libs/x86_64/lib22295b0d6c0a828b.so',
     ];
 
     for (final assetPath in files) {
