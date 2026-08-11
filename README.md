@@ -42,7 +42,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| `dpt.jar` | dpt-shell v2.15.0 加固主程序 |
+| `dpt.jar` | dpt-shell  加固主程序 |
 | `apksigner.jar` | Android Build Tools r34 签名工具 |
 | `zipalign.exe` | APK 对齐工具 |
 | `shell-files/` | dpt-shell 运行时所需的 dex 与 native 库 |
