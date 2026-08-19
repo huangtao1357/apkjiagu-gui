@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// 释放到应用支持目录再调用。
 class ToolPaths {
   static const _versionKey = 'tools_version';
-  static const _toolsVersion = '6';
+  static const _toolsVersion = '7';
 
   static late final String _toolsRoot;
   static late final String _dptJarPath;
@@ -65,10 +65,10 @@ class ToolPaths {
       'tools/dpt-exclude-classes-template.rules',
       'tools/dpt-protect-config-template.json',
       'tools/shell-files/dex/classes.dex',
-      'tools/shell-files/libs/arm/lib15424a48c3971f97.so',
-      'tools/shell-files/libs/arm64/lib15424a48c3971f97.so',
-      'tools/shell-files/libs/x86/lib15424a48c3971f97.so',
-      'tools/shell-files/libs/x86_64/lib15424a48c3971f97.so',
+      'tools/shell-files/libs/arm/lib882303626fbef8b3.so',
+      'tools/shell-files/libs/arm64/lib882303626fbef8b3.so',
+      'tools/shell-files/libs/x86/lib882303626fbef8b3.so',
+      'tools/shell-files/libs/x86_64/lib882303626fbef8b3.so',
     ];
 
     for (final assetPath in files) {
