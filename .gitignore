@@ -84,6 +84,9 @@ downloads/
 TODO.md
 NOTES.md
 
+# Trae 本地配置与 skill（仅本地，不入库）
+.trae/
+
 # Release 打包产物（仅本地保存，不入库）
 apkjiagu-*.zip
 apkjiagu-*-windows-x64/
