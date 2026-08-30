@@ -1,9 +1,0 @@
-{
-  "shellPkgName" : "<random>",
-  "signature" : {
-    "keystore" : "/path/to/keystore.jks",
-    "alias" : "key0",
-    "storepass" : "android",
-    "keypass" : "android"
-  }
-}

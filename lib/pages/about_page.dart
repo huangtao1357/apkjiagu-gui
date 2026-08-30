@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app.dart';
+import '../services/tool_paths.dart';
 
 /// 在默认浏览器中打开 URL
 Future<void> _openUrl(String url) async {
@@ -19,6 +20,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   String _version = '';
+  String _dptVersion = '';
 
   @override
   void initState() {
@@ -28,9 +30,11 @@ class _AboutPageState extends State<AboutPage> {
 
   Future<void> _loadVersion() async {
     final info = await PackageInfo.fromPlatform();
+    final dpt = await ToolPaths.detectDptVersion();
     if (mounted) {
       setState(() {
         _version = 'v${info.version}.${info.buildNumber}';
+        _dptVersion = dpt ?? '';
       });
     }
   }
@@ -82,7 +86,9 @@ class _AboutPageState extends State<AboutPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '基于 DPT-SHELL (v2.20.0) 的可视化加固与签名工具',
+                _dptVersion.isEmpty
+                    ? '基于 DPT-SHELL 的可视化加固与签名工具'
+                    : '基于 DPT-SHELL ($_dptVersion) 的可视化加固与签名工具',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
@@ -214,7 +220,8 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                       const SizedBox(height: 10),
                       _DisclaimerItem(
-                        text: '本工具基于开源项目 DPT-SHELL (v2.20.0) 构建，'
+                        text: '本工具基于开源项目 DPT-SHELL'
+                            '${_dptVersion.isEmpty ? '' : ' ($_dptVersion)'} 构建，'
                             '不对加固后的应用提供绝对的安全保证。'
                             '加固效果可能因目标应用的结构而异。',
                         cs: cs,

@@ -16,8 +16,11 @@ class HardenOptions {
   final bool verifySign;
   final bool disableAcf;
   final bool noisyLog;
+  // dpt v2.20.0 新增的运行时检测开关，作为兼容性逃生口
+  final bool disableAntiDebug;
+  final bool disableCrcDetect;
+  final bool disableFridaDetect;
   final String? rulesFile;
-  final String? protectConfig;
 
   HardenOptions({
     required this.apkPath,
@@ -30,8 +33,10 @@ class HardenOptions {
     this.verifySign = false,
     this.disableAcf = false,
     this.noisyLog = false,
+    this.disableAntiDebug = false,
+    this.disableCrcDetect = false,
+    this.disableFridaDetect = false,
     this.rulesFile,
-    this.protectConfig,
   });
 
   /// 构造命令行参数列表
@@ -53,11 +58,11 @@ class HardenOptions {
     if (verifySign) args.add('-vs');
     if (disableAcf) args.add('--disable-acf');
     if (noisyLog) args.add('--noisy-log');
+    if (disableAntiDebug) args.add('--disable-anti-debug');
+    if (disableCrcDetect) args.add('--disable-crc-detect');
+    if (disableFridaDetect) args.add('--disable-frida-detect');
     if (rulesFile != null && rulesFile!.isNotEmpty) {
       args.addAll(['-r', rulesFile!]);
-    }
-    if (protectConfig != null && protectConfig!.isNotEmpty) {
-      args.addAll(['-c', protectConfig!]);
     }
     if (outputDir != null && outputDir!.isNotEmpty) {
       args.addAll(['-o', outputDir!]);

@@ -51,6 +51,7 @@ class ApkSignerService {
     }
 
     // 2. apksigner 签名
+    // 密码经环境变量传递（env:），避免出现在进程命令行中被本机其他进程读取
     final args = <String>[
       '-jar',
       ToolPaths.apksignerJar,
@@ -60,12 +61,15 @@ class ApkSignerService {
       '--ks-key-alias',
       config.alias,
       '--ks-pass',
-      'pass:${config.keystorePassword}',
-      '--key-pass',
-      'pass:${config.aliasPassword}',
+      'env:APKJIAGU_KS_PASS',
       '--min-sdk-version',
       minSdkVersion.toString(),
     ];
+
+    // 别名密码缺省时不传 --key-pass，让 apksigner 自行回退（先试 keystore 密码再试空密码）
+    if (config.aliasPassword.isNotEmpty) {
+      args.addAll(['--key-pass', 'env:APKJIAGU_ALIAS_PASS']);
+    }
 
     if (config.autoScheme) {
       onLog('INFO', '签名策略：自动探测（按 minSdk 选择）');
@@ -87,7 +91,16 @@ class ApkSignerService {
     args.addAll(['--out', outputApk, alignedApk]);
 
     onLog('INFO', '运行 apksigner: java ${_maskArgs(args).join(' ')}');
-    final proc = await Process.start('java', args, runInShell: false);
+    final proc = await Process.start(
+      'java',
+      args,
+      runInShell: false,
+      environment: {
+        'APKJIAGU_KS_PASS': config.keystorePassword,
+        if (config.aliasPassword.isNotEmpty)
+          'APKJIAGU_ALIAS_PASS': config.aliasPassword,
+      },
+    );
 
     final stdoutSub = proc.stdout
         .transform(utf8.decoder)

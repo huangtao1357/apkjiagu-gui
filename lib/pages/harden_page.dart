@@ -25,10 +25,54 @@ class _HardenPageState extends State<HardenPage> {
   final _logScrollController = ScrollController();
   bool _dragOver = false;
 
+  // 监听加固任务结束（成功/失败/取消），弹出提示
+  AppState? _observedState;
+  bool _wasRunning = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final s = context.read<AppState>();
+    if (!identical(s, _observedState)) {
+      _observedState?.removeListener(_onAppStateChanged);
+      _observedState = s;
+      _observedState!.addListener(_onAppStateChanged);
+      _wasRunning = s.running;
+    }
+  }
+
   @override
   void dispose() {
+    _observedState?.removeListener(_onAppStateChanged);
     _logScrollController.dispose();
     super.dispose();
+  }
+
+  void _onAppStateChanged() {
+    final s = _observedState!;
+    if (_wasRunning && !s.running && mounted) {
+      final messenger = ScaffoldMessenger.of(context);
+      if (s.lastOutputApk != null) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: const Text('加固完成'),
+            action: SnackBarAction(
+              label: '打开目录',
+              onPressed: () => revealInExplorer(s.lastOutputApk!),
+            ),
+          ),
+        );
+      } else if (s.lastError != null) {
+        messenger.showSnackBar(
+          SnackBar(content: Text('加固失败：${s.lastError}')),
+        );
+      } else {
+        messenger.showSnackBar(
+          const SnackBar(content: Text('加固已取消')),
+        );
+      }
+    }
+    _wasRunning = s.running;
   }
 
   void _scrollToBottom() {
@@ -164,12 +208,11 @@ class _HardenPageState extends State<HardenPage> {
               setState(() => _dragOver = false);
               if (detail.files.isNotEmpty) {
                 final path = detail.files.first.path;
-                if (path.toLowerCase().endsWith('.apk') ||
-                    path.toLowerCase().endsWith('.aab')) {
+                if (path.toLowerCase().endsWith('.apk')) {
                   s.loadApk(path);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('请拖入 .apk 或 .aab 文件')),
+                    const SnackBar(content: Text('仅支持 .apk 文件')),
                   );
                 }
               }
@@ -211,7 +254,7 @@ class _HardenPageState extends State<HardenPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _dragOver ? '松开以载入' : '拖入 APK / AAB 文件',
+                      _dragOver ? '松开以载入' : '拖入 APK 文件',
                       style: TextStyle(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w500,
@@ -235,7 +278,7 @@ class _HardenPageState extends State<HardenPage> {
                               final result =
                                   await FilePicker.platform.pickFiles(
                                 type: FileType.custom,
-                                allowedExtensions: ['apk', 'aab'],
+                                allowedExtensions: ['apk'],
                               );
                               if (result != null && result.files.isNotEmpty) {
                                 s.loadApk(result.files.first.path!);
@@ -351,6 +394,9 @@ class _HardenPageState extends State<HardenPage> {
           _switchTile(s, 'Debuggable', 'debuggable', '使包可调试'),
           _switchTile(s, '运行时签名校验', 'verifySign', '运行时校验 APK 签名'),
           _switchTile(s, '禁用组件工厂', 'disableAcf', '禁用 AppComponentFactory'),
+          _switchTile(s, '禁用反调试', 'disableAntiDebug', '加固应用调试时崩溃可尝试开启'),
+          _switchTile(s, '禁用 CRC 检测', 'disableCrcDetect', '关闭运行时 libc .text CRC 校验'),
+          _switchTile(s, '禁用 Frida 检测', 'disableFridaDetect', '关闭运行时 Frida 检测'),
           _switchTile(s, '详细日志', 'noisyLog', '打开 noisy 日志'),
           _softDivider(),
           ListTile(
@@ -377,6 +423,55 @@ class _HardenPageState extends State<HardenPage> {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: const Text('选择', style: TextStyle(fontSize: 11.5)),
+            ),
+          ),
+          ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.folder_copy_outlined,
+                size: 18, color: cs.onSurfaceVariant),
+            title: const Text('输出目录', style: TextStyle(fontSize: 12.5)),
+            subtitle: Text(
+              (s.customOutputDir != null && s.customOutputDir!.isNotEmpty)
+                  ? s.customOutputDir!
+                  : '默认：APK 所在目录下的 dpt_output 文件夹',
+              style: const TextStyle(fontSize: 10.5),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (s.customOutputDir != null &&
+                    s.customOutputDir!.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.restart_alt_rounded, size: 16),
+                    tooltip: '恢复默认',
+                    visualDensity: VisualDensity.compact,
+                    onPressed:
+                        s.running ? null : () => s.setOutputDir(null),
+                  ),
+                OutlinedButton(
+                  onPressed: s.running
+                      ? null
+                      : () async {
+                          final dirPath =
+                              await FilePicker.platform.getDirectoryPath(
+                            dialogTitle: '选择加固输出目录',
+                          );
+                          if (dirPath != null) {
+                            s.setOutputDir(dirPath);
+                          }
+                        },
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 4),
+                    minimumSize: const Size(0, 30),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: const Text('选择', style: TextStyle(fontSize: 11.5)),
+                ),
+              ],
             ),
           ),
         ],

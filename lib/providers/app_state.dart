@@ -54,8 +54,13 @@ class AppState extends ChangeNotifier {
   bool verifySign = false;
   bool disableAcf = false;
   bool noisyLog = false;
+  bool disableAntiDebug = false;
+  bool disableCrcDetect = false;
+  bool disableFridaDetect = false;
   String? rulesFile;
-  String? protectConfig;
+
+  /// 自定义输出目录；null 表示默认（APK 同目录下 dpt_output/）
+  String? customOutputDir;
 
   /// 设置加固布尔参数，通过字段名标识
   void setHardenOption(String field, bool value) {
@@ -93,12 +98,26 @@ class AppState extends ChangeNotifier {
       case 'noisyLog':
         noisyLog = value;
         break;
+      case 'disableAntiDebug':
+        disableAntiDebug = value;
+        break;
+      case 'disableCrcDetect':
+        disableCrcDetect = value;
+        break;
+      case 'disableFridaDetect':
+        disableFridaDetect = value;
+        break;
     }
     notifyListeners();
   }
 
   void setRulesFile(String? path) {
     rulesFile = path;
+    notifyListeners();
+  }
+
+  void setOutputDir(String? path) {
+    customOutputDir = path;
     notifyListeners();
   }
 
@@ -131,7 +150,11 @@ class AppState extends ChangeNotifier {
       await ToolPaths.initialize();
       final v = await ToolPaths.detectJava();
       if (v == null) {
-        _envError = '未检测到 Java，请安装 JDK/JRE 17+ 并配置 PATH';
+        _envError =
+            '未检测到 Java，请安装 JDK/JRE ${ToolPaths.minJavaMajor}+ 并配置 PATH';
+      } else if (ToolPaths.javaMajor(v) < ToolPaths.minJavaMajor) {
+        _envError =
+            'Java 版本过低（当前 $v），dpt-shell 需要 JDK/JRE ${ToolPaths.minJavaMajor}+';
       } else {
         _javaVersion = v;
       }
@@ -142,6 +165,18 @@ class AppState extends ChangeNotifier {
         await SignConfigStore.saveAll(signConfigs);
       }
       history = await HistoryStore.list();
+      // 上次运行异常退出（崩溃/强杀）遗留的"进行中"记录，启动时统一标记为失败
+      final staleRunning =
+          history.where((r) => r.status == RecordStatus.running).toList();
+      for (final r in staleRunning) {
+        final fixed = r.copyWith(
+          status: RecordStatus.failed,
+          finishedAt: DateTime.now(),
+          errorMessage: '应用异常退出，任务中断',
+        );
+        await HistoryStore.update(fixed);
+        history[history.indexWhere((e) => e.id == r.id)] = fixed;
+      }
       _envReady = true;
     } catch (e, st) {
       _envError = '初始化失败: $e\n$st';
@@ -255,7 +290,10 @@ class AppState extends ChangeNotifier {
         .toIso8601String()
         .replaceAll(RegExp(r'[:.]'), '-')
         .substring(0, 19);
-    final outDir = p.join(apkDir, 'dpt_output', '${baseName}_$stamp');
+    final hasCustomOut = customOutputDir != null && customOutputDir!.isNotEmpty;
+    final outDir = hasCustomOut
+        ? p.join(customOutputDir!, '${baseName}_$stamp')
+        : p.join(apkDir, 'dpt_output', '${baseName}_$stamp');
 
     // 创建历史记录
     final record = HistoryRecord(
@@ -289,8 +327,10 @@ class AppState extends ChangeNotifier {
         verifySign: verifySign,
         disableAcf: disableAcf,
         noisyLog: noisyLog,
+        disableAntiDebug: disableAntiDebug,
+        disableCrcDetect: disableCrcDetect,
+        disableFridaDetect: disableFridaDetect,
         rulesFile: rulesFile,
-        protectConfig: protectConfig,
       );
 
       final result = await DptRunner.run(
@@ -354,6 +394,18 @@ class AppState extends ChangeNotifier {
           isCanceled: () => _cancelRequested,
         );
         if (code != 0) {
+          // 签名进程被取消（kill）时按"已取消"记录，而不是"签名失败"
+          if (_cancelRequested) {
+            await _updateRecord(record.copyWith(
+              status: RecordStatus.canceled,
+              finishedAt: DateTime.now(),
+              errorMessage: '用户取消',
+            ));
+            log('WARN', '签名已取消');
+            _running = false;
+            notifyListeners();
+            return;
+          }
           await _updateRecord(record.copyWith(
             status: RecordStatus.failed,
             finishedAt: DateTime.now(),

@@ -500,31 +500,38 @@ class _SideNavState extends State<_SideNav> {
                   child: const Icon(Icons.shield, color: Colors.white, size: 23),
                 ),
                 const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'APK 加固',
-                      style: TextStyle(
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w700,
-                        color: cs.onSurface,
-                        letterSpacing: 0.4,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'APK 加固',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w700,
+                          color: cs.onSurface,
+                          letterSpacing: 0.4,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'DPT · SHELL',
-                      style: TextStyle(
-                        fontSize: 9.5,
-                        color: isDark
-                            ? AppPalette.primaryOnDark
-                            : AppPalette.primary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 2.5,
+                      const SizedBox(height: 2),
+                      Text(
+                        'DPT · SHELL',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 9.5,
+                          color: isDark
+                              ? AppPalette.primaryOnDark
+                              : AppPalette.primary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 2.5,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
