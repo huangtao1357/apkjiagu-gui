@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// 释放到应用支持目录再调用。
 class ToolPaths {
   static const _versionKey = 'tools_version';
-  static const _toolsVersion = '8';
+  static const _toolsVersion = '9';
 
   /// dpt.jar 字节码为 class file version 55，最低要求 Java 11
   static const minJavaMajor = 11;
@@ -65,10 +65,10 @@ class ToolPaths {
       'tools/zipalign.exe',
       'tools/dpt-exclude-classes-template.rules',
       'tools/shell-files/dex/classes.dex',
-      'tools/shell-files/libs/arm/lib2a80863609dc72ed.so',
-      'tools/shell-files/libs/arm64/lib2a80863609dc72ed.so',
-      'tools/shell-files/libs/x86/lib2a80863609dc72ed.so',
-      'tools/shell-files/libs/x86_64/lib2a80863609dc72ed.so',
+      'tools/shell-files/libs/arm/lib830f622c2304076e.so',
+      'tools/shell-files/libs/arm64/lib830f622c2304076e.so',
+      'tools/shell-files/libs/x86/lib830f622c2304076e.so',
+      'tools/shell-files/libs/x86_64/lib830f622c2304076e.so',
     ];
 
     for (final assetPath in files) {
@@ -119,7 +119,7 @@ class ToolPaths {
 
   static String? _dptVersion;
 
-  /// 读取 dpt.jar 自身版本号（java -jar dpt.jar -v，输出如 "2.20.0"）。
+  /// 读取 dpt.jar 自身版本号（java -jar dpt.jar -v，输出如 "2.21.0"）。
   /// 结果缓存，java 不可用或读取失败时返回 null。
   static Future<String?> detectDptVersion() async {
     if (_dptVersion != null) return _dptVersion;

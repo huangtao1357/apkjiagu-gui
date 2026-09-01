@@ -56,6 +56,9 @@ test.apk
 !assets/tools/shell-files/
 !assets/tools/shell-files/**
 
+# dpt v2.21.0 加固时会在 shell-files 目录旁生成垃圾代码 dex（运行时产物，不入库）
+assets/tools/shell-files/dex/junkcode.dex
+
 # 加固输出目录
 dpt_output/
 
