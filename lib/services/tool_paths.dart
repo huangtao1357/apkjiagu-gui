@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// 释放到应用支持目录再调用。
 class ToolPaths {
   static const _versionKey = 'tools_version';
-  static const _toolsVersion = '9';
+  static const _toolsVersion = '10';
 
   /// dpt.jar 字节码为 class file version 55，最低要求 Java 11
   static const minJavaMajor = 11;
@@ -65,10 +65,10 @@ class ToolPaths {
       'tools/zipalign.exe',
       'tools/dpt-exclude-classes-template.rules',
       'tools/shell-files/dex/classes.dex',
-      'tools/shell-files/libs/arm/lib830f622c2304076e.so',
-      'tools/shell-files/libs/arm64/lib830f622c2304076e.so',
-      'tools/shell-files/libs/x86/lib830f622c2304076e.so',
-      'tools/shell-files/libs/x86_64/lib830f622c2304076e.so',
+      'tools/shell-files/libs/arm/lib4f77281929c38f77.so',
+      'tools/shell-files/libs/arm64/lib4f77281929c38f77.so',
+      'tools/shell-files/libs/x86/lib4f77281929c38f77.so',
+      'tools/shell-files/libs/x86_64/lib4f77281929c38f77.so',
     ];
 
     for (final assetPath in files) {
